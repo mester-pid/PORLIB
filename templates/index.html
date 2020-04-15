@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>PORLIB</title>
+    <meta charset="utf-8" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='app1.css') }}" />
+  </head>
+  <body id="page">
+  
+		<center>
+		<video controls="controls" width="250" preload="metadata">
+
+		<source src="https://interactive-examples.mdn.mozilla.net/media/examples/flower.mp4#t=0.5"
+            type="video/mp4">
+
+		Sorry, your browser doesn't support embedded videos.
+		</video>
+		</center>
+	
+	
+		<form id="form" method="POST">
+			Enter POR URI: <input name="text" size="40">
+			<input type="submit">
+		</form>
+	
+  </body>
+</html>
