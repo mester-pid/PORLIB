@@ -1,7 +1,7 @@
 from flask import Flask , request, render_template
 #from flask_sqlalchemy import SQLAlchemy
 import sys
-
+import subprocess
 
 app = Flask(__name__)
 
@@ -24,12 +24,13 @@ class Result(db.Model):
  
 @app.route('/', methods=['GET','POST'])
 def index():
-    '''
-    if request.method == 'POST':
-        spotid = request.form['text'][17:]
-    '''
 
-    return render_template('index.html')
+    if request.method == 'POST':
+        plink = request.form['text']
+        res = subprocess.check_output(["wget","-O","./static/p.mp4", plink])  
+        print(res)
+        
+    return render_template('index.html', link="/static/p.mp4")
     
 
 if __name__ == '__main__':
