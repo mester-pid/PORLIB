@@ -29,7 +29,7 @@ def index():
         plink = request.form['text']
         res = subprocess.check_output(["wget","-O","./static/p.mp4", plink])  
         print(res)
-        return render_template('index.html', link="/static/p.mp4")
+        return render_template('index.html', link="/static/p.mp4",log=res)
         
     return render_template('index.html', link="/static/p.mp4")
     
