@@ -38,5 +38,11 @@ def index():
     return render_template('index.html', link="/static/p.mp4",log=res)
     
 
+@app.route('/mpor')
+def por():
+
+    return render_template('index.html', link="/static/p.mp4")
+
+
 if __name__ == '__main__':
     app.run(debug=True)
