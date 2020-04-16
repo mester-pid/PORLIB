@@ -28,6 +28,7 @@ def index():
     if request.method == 'POST':
         plink = request.form['text']
         #res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
+        res = subprocess.check_output(["rm","-f","static/p.mp4"])
         res = subprocess.check_output(["youtube-dl","-o","./static/p.mp4", plink])   
         print(res)
         return render_template('index.html', link="./static/p.mp4",log=res)
