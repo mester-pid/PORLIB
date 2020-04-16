@@ -31,7 +31,7 @@ def index():
         res = subprocess.check_output(["rm","-f","static/p.mp4"])
         res = subprocess.check_output(["youtube-dl","-o","./static/p.mp4", plink])   
         print(res)
-        return render_template('index.html', link="./static/p.mp4",log=res)
+        #return render_template('index.html', link="./static/p.mp4",log=res)
         
     return render_template('index.html', link="./static/p.mp4",log=res)
     
