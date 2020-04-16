@@ -24,15 +24,15 @@ class Result(db.Model):
  
 @app.route('/', methods=['GET','POST'])
 def index():
-
+    log=""
     if request.method == 'POST':
         plink = request.form['text']
         res = subprocess.check_output(["wget","-O","./static/p.mp4", plink])  
         print(res)
         return render_template('index.html', link="/static/p.mp4",log=res)
         
-    return render_template('index.html', link="/static/p.mp4")
+    return render_template('index.html', link="/static/p.mp4",log=res)
     
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run()
