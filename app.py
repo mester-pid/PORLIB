@@ -8,6 +8,7 @@ app = Flask(__name__)
 '''
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://zzazzlogoeqjwv:42c24db7e704bf9cff26b54093f73e28d47dcc66b186fbfd773fe945636b9401@ec2-107-21-108-37.compute-1.amazonaws.com:5432/du1cdjsto37gr'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 class Result(db.Model):
@@ -21,7 +22,8 @@ class Result(db.Model):
         self.playlist_id = playlist_id
         self.emotions = emotions
  '''
- 
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 @app.route('/', methods=['GET','POST'])
 def index():
     res=""
@@ -31,10 +33,10 @@ def index():
         res = subprocess.check_output(["rm","-f","static/p.mp4"])
         res = subprocess.check_output(["youtube-dl","-o","./static/p.mp4", plink])   
         print(res)
-        #return render_template('index.html', link="./static/p.mp4",log=res)
+        #return render_template('index.html', link="/static/p.mp4",log=res)
         
-    return render_template('index.html', link="./static/p.mp4",log=res)
+    return render_template('index.html', link="/static/p.mp4",log=res)
     
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
