@@ -24,7 +24,7 @@ class Result(db.Model):
  
 @app.route('/', methods=['GET','POST'])
 def index():
-    log=""
+    res=""
     if request.method == 'POST':
         plink = request.form['text']
         res = subprocess.check_output(["wget","-O","./static/p.mp4", plink])  
