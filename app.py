@@ -26,10 +26,10 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.route('/')
 def index():
-    
+    dels=[3,14,26]
     vidsaddr = []
-    for i in range(1,11):
-        if i!=3:
+    for i in range(1,34):
+        if i not in dels:
             vidsaddr.append(str(i)+".mp4")
     '''
     res=""
