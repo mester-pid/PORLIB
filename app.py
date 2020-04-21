@@ -30,7 +30,7 @@ def index():
     vidsaddr = []
     for i in range(1,11):
         if i!=3:
-            vidsaddr.append("/videos/"+str(i)+".mp4")
+            vidsaddr.append("videos/"+str(i)+".mp4")
     '''
     res=""
     if request.method == 'POST':
