@@ -28,9 +28,9 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 def index():
     
     vidsaddr = []
-        for i in range(1,11):
-            if i!=3:
-                vidsaddr.append("/videos/"+i+".mp4")
+    for i in range(1,11):
+        if i!=3:
+            vidsaddr.append("/videos/"+i+".mp4")
 '''
     res=""
     if request.method == 'POST':
