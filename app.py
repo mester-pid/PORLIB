@@ -30,7 +30,7 @@ def index():
     vidsaddr = []
     for i in range(1,11):
         if i!=3:
-            vidsaddr.append("videos/"+str(i)+".mp4")
+            vidsaddr.append(str(i)+".mp4")
     '''
     res=""
     if request.method == 'POST':
@@ -43,6 +43,7 @@ def index():
         return render_template('portfolio.html', vids=vidsaddr)
         
     '''
+    print(vidsaddr)
     return render_template('portfolio.html', vids=vidsaddr)
     
 
