@@ -21,17 +21,17 @@ class Result(db.Model):
     def __init__(self, playlist_id, emotions):
         self.playlist_id = playlist_id
         self.emotions = emotions
- '''
+'''
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/')
 def index():
     
     vidsaddr = []
     for i in range(1,11):
         if i!=3:
-            vidsaddr.append("/videos/"+i+".mp4")
-'''
+            vidsaddr.append("/videos/"+str(i)+".mp4")
+    '''
     res=""
     if request.method == 'POST':
         plink = request.form['text']
@@ -41,7 +41,8 @@ def index():
         print(res)
         
         return render_template('portfolio.html', vids=vidsaddr)
-'''        
+        
+    '''
     return render_template('portfolio.html', vids=vidsaddr)
     
 
