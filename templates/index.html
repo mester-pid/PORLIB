@@ -6,7 +6,7 @@
   </head>
   <body id="page">
   
-		<center>
+	<center>
 		<video controls="controls" width="350" preload="metadata">
 
 		<source src={{ url_for('static', filename="%s" % link) }}#t=0.1
@@ -14,7 +14,7 @@
 
 		Sorry, your browser doesn't support embedded videos.
 		</video>
-		</center>
+		
 	
 	
 		<form id="form" method="POST">
@@ -26,6 +26,6 @@
 		<textarea cols="45" rows="15" readonly>
 		{{ log }}
 		</textarea>
-	
+	</center>
   </body>
 </html>
