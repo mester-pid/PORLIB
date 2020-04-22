@@ -3,6 +3,7 @@
   <head>
     <title>PORLIB STREAM</title>
     <meta charset="utf-8" />
+	<meta http-equiv="refresh" content="60; index.html" />
   </head>
   <body id="page">
   
@@ -27,5 +28,12 @@
 		{{ log }}
 		</textarea>
 	</center>
+	
+	<script>
+		if ( window.history.replaceState ) {
+			window.history.replaceState( null, null, window.location.href );
+		}
+	</script>
+
   </body>
 </html>
