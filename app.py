@@ -1,4 +1,4 @@
-from flask import Flask , request, render_template
+from flask import Flask , request, render_template,redirect,url_for
 #from flask_sqlalchemy import SQLAlchemy
 import sys
 import subprocess
@@ -22,15 +22,34 @@ class Result(db.Model):
         self.playlist_id = playlist_id
         self.emotions = emotions
 '''
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+#app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.route('/')
 def index():
-    dels=[3,14,26]
+    return redirect(url_for('vidspage',pagenum=1))
+
+
+@app.route('/vids/<int:pagenum>')
+def vidspage(pagenum):
+
+
+    dels=[3,14,26,35,37,38,39,40,43,45]
     vidsaddr = []
-    for i in range(1,34):
+    
+    for i in range(1,70):
         if i not in dels:
             vidsaddr.append(str(i)+".mp4")
+            
+                        
+    if pagenum==1:
+        vidsaddr=vidsaddr[:16]
+    if pagenum==2:
+        vidsaddr=vidsaddr[16:32]
+    if pagenum==3:
+        vidsaddr=vidsaddr[32:48]
+    if pagenum==4:
+        vidsaddr=vidsaddr[48:67]
+            
     '''
     res=""
     if request.method == 'POST':
@@ -43,8 +62,8 @@ def index():
         return render_template('portfolio.html', vids=vidsaddr)
         
     '''
-    print(vidsaddr)
-    return render_template('portfolio.html', vids=vidsaddr)
+
+    return render_template('portfolio.html', vidsaddr=vidsaddr,pagenum=pagenum)
     
 
 @app.route('/mpor')

@@ -20,11 +20,11 @@
           </div>
           <div class="row small-up-2 medium-up-3 large-up-4">
             
-			{% for vid in vids %}
+			{% for vid in vidsaddr %}
 			
 			<div class="column">
               <video class="thumbnail" controls="controls" preload="metadata">
-				<source src={{ url_for('static', filename="videos/%s" % vid) }}
+				<source src={{ url_for('static', filename="videos/%s" % vid) }}#t=0.1
 					type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.				
 			  </video>
@@ -34,6 +34,17 @@
           </div>
 
           <hr>
+
+		<div class="callout primary">
+            <div class="row column">
+              <nav>
+				<a href="{{ url_for('vidspage',pagenum=1) }}">{% if pagenum == 1 %}<b>1</b>{% else %}1{% endif %}</a> |
+				<a href="{{ url_for('vidspage',pagenum=2) }}">{% if pagenum == 2 %}<b>2</b>{% else %}2{% endif %}</a> |
+				<a href="{{ url_for('vidspage',pagenum=3) }}">{% if pagenum == 3 %}<b>3</b>{% else %}3{% endif %}</a> |
+				<a href="{{ url_for('vidspage',pagenum=4) }}">{% if pagenum == 4 %}<b>4</b>{% else %}4{% endif %}</a>
+			  </nav>
+            </div>
+          </div>
 
         </div>
       </div>
