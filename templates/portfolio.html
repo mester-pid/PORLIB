@@ -12,10 +12,10 @@
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
 
 
-        <div class="off-canvas-content" data-off-canvas-content>
-          <div class="callout primary">
+        <div class="off-canvas-content" style="background-color:#ebebeb;" >
+          <div class="callout primary" style="background-color:#aa2c2c;">
             <div class="row column">
-              <h1>PORLIB</h1>
+              <h1 style="color:#ffffff; font-size:3em;">PORLIB</h1>
             </div>
           </div>
           <div class="row small-up-2 medium-up-3 large-up-4">
@@ -23,7 +23,7 @@
 			{% for vid in vidsaddr %}
 			
 			<div class="column">
-              <video class="thumbnail" controls="controls" preload="metadata">
+              <video class="thumbnail" controls="controls" preload="metadata" style="border:3px solid #fefefe;">
 				<source src={{ url_for('static', filename="videos/%s" % vid) }}#t=0.1
 					type="video/mp4">
 					Sorry, your browser doesn't support embedded videos.				
@@ -33,18 +33,20 @@
             {% endfor %}
           </div>
 
-          <hr>
+         
 
-		<div class="callout primary">
+		<div class="callout primary" style="background-color:#aa2c2c;">
             <div class="row column">
+			<center>
               <nav>
-			  
+				|
 				{% for pnum in range (1,7) %}
-				<a href="{{ url_for('vidspage',pagenum='%i' %pnum) }}">{% if pagenum == pnum %}<b>{{pnum}}</b>{% else %}{{pnum}}{% endif %}</a> |
+				<a style="color:#d9d9d9; font-size:1em;" href="{{ url_for('vidspage',pagenum='%i' %pnum) }}">{% if pagenum == pnum %}<b style="color:#ffffff; font-size:1.1em;">{{pnum}}</b>{% else %}{{pnum}}{% endif %}</a> |
 					
 				{% endfor %}
 				
 			  </nav>
+			  </center>
             </div>
           </div>
 
