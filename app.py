@@ -56,26 +56,22 @@ def vidspage(pagenum):
     if pagenum==7:
         vidsaddr=vidsaddr[96:112]
             
-    '''
-    res=""
-    if request.method == 'POST':
-        plink = request.form['text']
-        res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
-        res = subprocess.check_output(["rm","-f","static/p.mp4"])
-        res = subprocess.check_output(["youtube-dl","-o","static/p.mp4", plink])   
-        print(res)
-        
-        return render_template('portfolio.html', vids=vidsaddr)
-        
-    '''
 
     return render_template('portfolio.html', vidsaddr=vidsaddr,pagenum=pagenum)
     
 
-@app.route('/mpor')
-def por():
-
-    return render_template('index.html', link="/static/p.mp4")
+@app.route('/stream' , methods=['GET', 'POST'])
+def stream():
+    res=""
+    res = subprocess.check_output(["rm","-f","static/p.mp4"])
+    if request.method == 'POST':
+        plink = request.form['text']
+        #res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
+        res = subprocess.check_output(["youtube-dl","-o","static/p.mp4", plink])   
+        print(res)
+        
+        return render_template('index.html', link="p.mp4")
+    return render_template('index.html',link="")
 
 
 if __name__ == '__main__':

@@ -1,16 +1,15 @@
 <!doctype html>
 <html>
   <head>
-    <title>PORLIB</title>
+    <title>PORLIB STREAM</title>
     <meta charset="utf-8" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='app1.css') }}" />
   </head>
   <body id="page">
   
 		<center>
 		<video controls="controls" width="350" preload="metadata">
 
-		<source src="{{ link }}"
+		<source src={{ url_for('static', filename="%s" % link) }}#t=0.1
             type="video/mp4">
 
 		Sorry, your browser doesn't support embedded videos.
@@ -23,7 +22,6 @@
 			<input type="submit">
 		</form>
 	
-		<p>mov link:https://porlib.herokuapp.com/mpor</p>
 	
 		<textarea cols="45" rows="15" readonly>
 		{{ log }}
