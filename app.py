@@ -33,10 +33,10 @@ def index():
 def vidspage(pagenum):
 
 
-    dels=[3,14,26,35,37,38,39,40,43,45]
+    dels=[3,14,26,35,37,38,39,40,43,45,59,]
     vidsaddr = []
     
-    for i in range(1,70):
+    for i in range(1,101):
         if i not in dels:
             vidsaddr.append(str(i)+".mp4")
             
@@ -48,7 +48,13 @@ def vidspage(pagenum):
     if pagenum==3:
         vidsaddr=vidsaddr[32:48]
     if pagenum==4:
-        vidsaddr=vidsaddr[48:67]
+        vidsaddr=vidsaddr[48:64]
+    if pagenum==5:
+        vidsaddr=vidsaddr[64:80]
+    if pagenum==6:
+        vidsaddr=vidsaddr[80:96]
+    if pagenum==7:
+        vidsaddr=vidsaddr[96:112]
             
     '''
     res=""
