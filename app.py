@@ -2,7 +2,8 @@ from flask import Flask , request, render_template,redirect,url_for
 #from flask_sqlalchemy import SQLAlchemy
 import sys
 import subprocess
-
+from concurrent.futures import ThreadPoolExecutor
+executor = ThreadPoolExecutor(1)
 app = Flask(__name__)
 
 '''
@@ -63,17 +64,22 @@ def vidspage(pagenum):
 @app.route('/stream' , methods=['GET', 'POST'])
 def stream():
     res=""
-    res = subprocess.check_output(["rm","-f","static/p.mp4"])
+    res = subprocess.check_output(["rm","-f","static/*.mp4"])
     if request.method == 'POST':
         plink = request.form['text']
-        #res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
-        res = subprocess.check_output(["rm","-f","static/p.mp4"])
-        res = subprocess.check_output(["youtube-dl","-o","static/p.mp4", plink])   
-        print(res)
         
-        return render_template('index.html', link="p.mp4")
+        #res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
+        res = subprocess.check_output(["rm","-f","static/*.mp4"])
+        title = subprocess.check_output(["youtube-dl","--get-filename", plink])
+        executor.submit(get_vid,pl=plink,tit=title)   
+        #print(res)
+        
+        return render_template('index.html', link=title)
     return render_template('index.html',link="")
 
+def get_vid(pl,tit):
+    
+    res = subprocess.check_output(["youtube-dl","-o","static/"+tit, pl])
 
 if __name__ == '__main__':
     app.run(debug=True)
