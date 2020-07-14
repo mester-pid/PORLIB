@@ -1,0 +1,1 @@
+{'current': 99.99, 'total': 100, 'status':'small-small.mp4','result': 42}

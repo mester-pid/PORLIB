@@ -1,29 +1,47 @@
-from flask import Flask , request, render_template,redirect,url_for
-#from flask_sqlalchemy import SQLAlchemy
+from flask import Flask , request, render_template,redirect,url_for,jsonify
 import sys
 import subprocess
-from concurrent.futures import ThreadPoolExecutor
-executor = ThreadPoolExecutor(1)
+import json
+from celery import Celery
+
 app = Flask(__name__)
 
-'''
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://zzazzlogoeqjwv:42c24db7e704bf9cff26b54093f73e28d47dcc66b186fbfd773fe945636b9401@ec2-107-21-108-37.compute-1.amazonaws.com:5432/du1cdjsto37gr'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+celery = Celery(app.name)
+celery.conf.update(app.config)
 
-class Result(db.Model):
-    __tablename__ = 'result'
-    id = db.Column(db.Integer, primary_key=True)
-    playlist_id = db.Column(db.String())
-    emotions = db.Column(db.String())
-  
- 
-    def __init__(self, playlist_id, emotions):
-        self.playlist_id = playlist_id
-        self.emotions = emotions
-'''
-#app.config['TEMPLATES_AUTO_RELOAD'] = True
+celery.conf.update({
+    'broker_url': 'filesystem://',
+    'broker_transport_options': {
+        'data_folder_in': 'app/broker/out',
+        'data_folder_out': 'app/broker/out',
+        'data_folder_processed': 'app/broker/processed'
+    },
+    
+    'result_persistent': False,
+    'task_serializer': 'json',
+    'result_serializer': 'json',
+    'accept_content': ['json']})
+
+
+#Long_wrok
+@celery.task(bind=True)
+def work(self,plink):
+
+    res=""
+    title=""
+    
+    title = subprocess.check_output(["youtube-dl","--get-filename", plink])
+    title = str(title).replace("b'","").replace("\\n'","")
+    res = subprocess.check_output(["youtube-dl","-o","static/"+title, plink])    
+   
+    print("!!!!!!!!!!!!!!",res,"TITLE:",title)
+       
+    with open('static/result.txt','w') as file:
+        file.write("{'current': 99.99, 'total': 100, 'status':'"+title+"','result': 42}")
+    
+    return {'current': 99.99, 'total': 100, 'status': title,'result': 42}
+
 
 @app.route('/')
 def index():
@@ -63,23 +81,45 @@ def vidspage(pagenum):
 
 @app.route('/stream' , methods=['GET', 'POST'])
 def stream():
-    res=""
-    res = subprocess.check_output(["rm","-f","static/*.mp4"])
+
+    with open('static/result.txt','w') as file:
+        file.write("")
+        
+    if request.method == 'GET':
+        return render_template('index.html')
+
+    return redirect(url_for('stream'))
+
+ 
+
+@app.route('/longtask', methods=['POST'])
+def longtask():
     if request.method == 'POST':
-        plink = request.form['text']
-        
-        #res = subprocess.check_output(["wget","-O","static/p.mp4", plink])
-        res = subprocess.check_output(["rm","-f","static/*.mp4"])
-        title = subprocess.check_output(["youtube-dl","--get-filename", plink])
-        executor.submit(get_vid,pl=plink,tit=title)   
-        #print(res)
-        
-        return render_template('index.html', link=title)
-    return render_template('index.html',link="")
-
-def get_vid(pl,tit):
+        plink = request.form['vidurl']
+        task = work.apply_async([plink])
     
-    res = subprocess.check_output(["youtube-dl","-o","static/"+tit, pl])
+    return jsonify({}),202, {'Location': url_for('taskstatus',
+                                                  task_id=task.id)}
 
+
+@app.route('/status/<task_id>')
+def taskstatus(task_id):
+    #return "done"
+
+    data = ""
+    with open('static/result.txt','r') as file:
+        data = file.read()
+        if data !="":
+            response = json.loads(data.replace("'","\""))
+            return response
+        else:
+            return {
+            'state': 'PENDING',
+            'current': 10,
+            'total': 100,
+            'status': 'Pending...'
+        }
+       
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
