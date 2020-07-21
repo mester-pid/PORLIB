@@ -126,4 +126,6 @@ dmypy.json
 .pyre/
 
 #########
-app.py.withcomment
+app.py.withCelerycomment
+app.py.withCelery
+templates/index.html.withCelery

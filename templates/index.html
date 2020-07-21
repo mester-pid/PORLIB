@@ -18,7 +18,6 @@
 			Enter POR URL: <input id="vidurl" name="text" size="40">			
 		</form><br>
 		<button id="start-bg-job">Submit</button><br><br>
-		
 
 	<div id="title"></div>
     <div id="progress"></div>
@@ -30,6 +29,13 @@
 		if ( window.history.replaceState ) {
 			window.history.replaceState( null, null, window.location.href );
 		}
+		
+				
+		$("#showtest").click(function(){
+			$.get("/static/result.txt", function(data, status){
+			alert("Data: " + data + "\nStatus: " + status);
+			});
+		});
 -->	
 	<script>
 		
@@ -48,10 +54,10 @@
             // send ajax POST request to start background job
             $.ajax({
                 type: 'POST',
-                url: '/longtask',
+                url: '/stream',
 				data: {'vidurl': $('#vidurl').val()},
                 success: function(data, status, request) {
-                    status_url = request.getResponseHeader('Location');
+                    status_url = '/status';
                     update_progress(status_url, nanobar, div[0]);
                 },
                 error: function() {
@@ -87,6 +93,8 @@
                 }
             });
         }
+
+		
         $(function() {
             $('#start-bg-job').click(start_long_task);
         });

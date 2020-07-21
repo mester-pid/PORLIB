@@ -2,31 +2,15 @@ from flask import Flask , request, render_template,redirect,url_for,jsonify
 import sys
 import subprocess
 import json
-from celery import Celery
+from threading import Thread
 
 app = Flask(__name__)
 
 
-celery = Celery(app.name)
-celery.conf.update(app.config)
-
-celery.conf.update({
-    'broker_url': 'filesystem://',
-    'broker_transport_options': {
-        'data_folder_in': 'app/broker/out',
-        'data_folder_out': 'app/broker/out',
-        'data_folder_processed': 'app/broker/processed'
-    },
-    
-    'result_persistent': False,
-    'task_serializer': 'json',
-    'result_serializer': 'json',
-    'accept_content': ['json']})
 
 
 #Long_wrok
-@celery.task(bind=True)
-def work(self,plink):
+def work(plink):
 
     res=""
     title=""
@@ -39,8 +23,6 @@ def work(self,plink):
        
     with open('static/result.txt','w') as file:
         file.write("{'current': 99.99, 'total': 100, 'status':'"+title+"','result': 42}")
-    
-    return {'current': 99.99, 'total': 100, 'status': title,'result': 42}
 
 
 @app.route('/')
@@ -85,26 +67,18 @@ def stream():
     with open('static/result.txt','w') as file:
         file.write("")
         
+    
+    if request.method == 'POST':
+        plink = request.form['vidurl']
+        thread = Thread(target=work,args=(plink,))
+        thread.daemon = True
+        thread.start()
+        return render_template('index.html')
     if request.method == 'GET':
         return render_template('index.html')
 
-    return redirect(url_for('stream'))
-
- 
-
-@app.route('/longtask', methods=['POST'])
-def longtask():
-    if request.method == 'POST':
-        plink = request.form['vidurl']
-        task = work.apply_async([plink])
-    
-    return jsonify({}),202, {'Location': url_for('taskstatus',
-                                                  task_id=task.id)}
-
-
-@app.route('/status/<task_id>')
-def taskstatus(task_id):
-    #return "done"
+@app.route('/status')
+def taskstatus():
 
     data = ""
     with open('static/result.txt','r') as file:
@@ -119,7 +93,7 @@ def taskstatus(task_id):
             'total': 100,
             'status': 'Pending...'
         }
-       
-    
+ 
+ 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True,threaded=True)
